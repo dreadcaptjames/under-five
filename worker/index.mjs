@@ -74,7 +74,10 @@ async function handleApi(request, env, url) {
 function serveAsset(pathname, method) {
     const file = files[pathname];
     if (!file || (method !== "GET" && method !== "HEAD")) return new Response("Not found", { status: 404 });
-    return new Response(method === "HEAD" ? null : file.contents, {
+    const contents = file.base64
+        ? Uint8Array.from(atob(file.base64), character => character.charCodeAt(0))
+        : file.contents;
+    return new Response(method === "HEAD" ? null : contents, {
         headers: {
             "Content-Type": file.type,
             "Content-Security-Policy": pathname === "/assets/python-worker.js" ? pythonPolicy : pagePolicy,
