@@ -1,5 +1,8 @@
+import { BROWSER_WALLET_KEY, readBrowserWallet, updateBrowserWallet } from "./browser-wallet.mjs";
 import { hostedScan } from "./hosted-scan.mjs";
 
+const browserWallet = document.documentElement.dataset.wallet === "browser";
+const marketOrigin = document.documentElement.dataset.marketOrigin;
 const byId = (id) => document.getElementById(id);
 const scanner = byId("scanner-view");
 const wallet = byId("wallet-view");
@@ -72,7 +75,10 @@ function exactPrice(price) {
     return `$${whole}.${(match[2] ?? "").padEnd(2, "0")}`;
 }
 
-async function request(path, data) {
+async function requestWallet(data) {
+    if (browserWallet) {
+        return data === undefined ? readBrowserWallet() : updateBrowserWallet(data);
+    }
     let response;
     const options = {headers: {Accept: "application/json"}};
     if (data !== undefined) {
@@ -81,7 +87,7 @@ async function request(path, data) {
         options.body = JSON.stringify(data);
     }
     try {
-        response = await fetch(path, options);
+        response = await fetch("/api/wallet", options);
     } catch {
         throw new Error("Could not reach UnderFive. Check your connection and try again.");
     }
@@ -343,7 +349,7 @@ function renderWallet() {
 async function refreshWallet() {
     const version = ++state.walletVersion;
     try {
-        const result = await request("/api/wallet");
+        const result = await requestWallet();
         if (version !== state.walletVersion) return;
         state.holdings = result.holdings;
         state.walletError = "";
@@ -402,7 +408,7 @@ scanForm.addEventListener("submit", async (event) => {
     if (!state.hasScanned) renderResults();
 
     try {
-        const result = await hostedScan({symbols, universe_size: size});
+        const result = await hostedScan({symbols, universe_size: size}, marketOrigin);
         state.candidates = result.candidates;
         state.hasScanned = true;
         state.scanUnavailable = result.total > 0 && result.checked === 0;
@@ -478,7 +484,7 @@ tradeForm.addEventListener("submit", async (event) => {
     setStatus(byId("trade-error"), "");
 
     try {
-        const result = await request("/api/wallet", body);
+        const result = await requestWallet(body);
         state.walletVersion += 1;
         state.holdings = result.holdings;
         state.walletLoading = false;
@@ -503,6 +509,11 @@ tradeForm.addEventListener("submit", async (event) => {
 });
 
 new ResizeObserver(drawChart).observe(chart);
+if (browserWallet) {
+    window.addEventListener("storage", ({key}) => {
+        if (key === null || key.startsWith(BROWSER_WALLET_KEY)) refreshWallet();
+    });
+}
 syncDiscoveryInput();
 renderResults();
 refreshWallet();

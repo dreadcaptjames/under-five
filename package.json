@@ -2,6 +2,9 @@
   "name": "underfive-hosted",
   "private": true,
   "type": "module",
-  "scripts": { "build": "node build.mjs" },
+  "scripts": {
+    "build": "node build.mjs",
+    "build:market": "node build-market.mjs"
+  },
   "devDependencies": { "esbuild": "0.25.12" }
 }

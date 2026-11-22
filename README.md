@@ -1,18 +1,20 @@
 # under-five
 
-UnderFive is a private web dashboard that screens U.S.-listed stocks under $5 and records one share per ticker in an account wallet. Python runs the momentum ranking in a browser worker through Pyodide. The server fetches market data and stores holdings in Cloudflare D1.
+UnderFive screens U.S.-listed stocks under $5 and tracks one share per ticker. Python ranks the results in a browser worker through Pyodide. The wallet saves holdings in the browser. [Open UnderFive](https://dreadcaptjames.github.io/under-five/)
 
-## Build
+## GitHub Pages
 
-With Node.js 18 or newer, run:
+Pages serves the root `index.html` and the `frontend/` directory from `main`. The `data-market-origin` attribute on the root page points to the market-data API. Wallet records live in browser storage.
+
+To build the market-data Worker with Node.js 18 or newer:
 
 ```sh
 npm ci
-npm run build
+npm run build:market
 ```
 
-The build bundles the dashboard and its API into a Cloudflare Worker at `dist/server/index.js`. The wallet migration is included in `dist/.openai/drizzle/`.
+The output is `dist/market/server/index.js`. The API allows cross-origin browser requests from `https://dreadcaptjames.github.io`.
 
-## Hosting
+## Private dashboard build
 
-Set `project_id` in `.openai/hosting.json` for your own ChatGPT Sites project before building for deployment. The app expects the Sites gateway to authenticate users and supply the trusted `oai-authenticated-user-id` header. It uses the `DB` D1 binding for account holdings.
+`npm run build` packages the account-based dashboard and wallet migration for a private ChatGPT Sites deployment. Its `DB` binding stores holdings and the Sites gateway supplies the authenticated user ID. Configure that deployment's `project_id` in `.openai/hosting.json`.

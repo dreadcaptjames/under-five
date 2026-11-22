@@ -6,6 +6,7 @@ const dist = new URL("dist/", root);
 const webFiles = {
     "/": ["index.html", "text/html"],
     "/assets/app.js": ["app.js", "text/javascript"],
+    "/assets/browser-wallet.mjs": ["browser-wallet.mjs", "text/javascript"],
     "/assets/hosted-scan.mjs": ["hosted-scan.mjs", "text/javascript"],
     "/assets/python-worker.js": ["python-worker.js", "text/javascript"],
     "/assets/ranking.py": ["ranking.py", "text/plain"],

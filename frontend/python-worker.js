@@ -8,7 +8,7 @@ function runtime() {
             importScripts(`${PYODIDE_URL}pyodide.js`);
             const [python, source] = await Promise.all([
                 loadPyodide({indexURL: PYODIDE_URL}),
-                fetch("/assets/ranking.py"),
+                fetch(new URL("./ranking.py", self.location.href)),
             ]);
             if (!source.ok) throw new Error("Ranking source unavailable");
             python.runPython(await source.text());
