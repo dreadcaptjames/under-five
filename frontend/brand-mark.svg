@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">UnderFive</title>
+  <defs>
+    <linearGradient id="brand-gradient" x1=".05" y1="0" x2=".95" y2="1">
+      <stop stop-color="#25bb98"/>
+      <stop offset="1" stop-color="#08654f"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="2" width="60" height="60" rx="17" fill="url(#brand-gradient)"/>
+  <path d="M43 19H24L21 31H31.5C39.5 31 44 34.7 44 41C44 47.2 38.5 51 31.5 51C26.1 51 21.5 49.1 18.4 45.7" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M38 12.8L43 8.8L49 12.8M43 9.4V16" fill="none" stroke="#baffdf" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

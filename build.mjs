@@ -11,6 +11,7 @@ const webFiles = {
     "/assets/python-worker.js": ["python-worker.js", "text/javascript"],
     "/assets/ranking.py": ["ranking.py", "text/plain"],
     "/assets/styles.css": ["styles.css", "text/css"],
+    "/assets/brand-mark.svg": ["brand-mark.svg", "image/svg+xml"],
 };
 
 const assets = Object.fromEntries(await Promise.all(Object.entries(webFiles).map(async ([path, [name, type]]) => [
